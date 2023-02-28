@@ -126,7 +126,22 @@ void Unit::dodge(){
 	dodge_on = true;
 }
 
-void equip(Equipment *){
+Equipment::Equipment(int x,int y, int z){
+	hpmax += x;
+	atk += y;
+	def += z;
+}
+
+vector<int> Equipment::getStat(){
+	vector<int> a(3);
+	a[0] = hpmax;
+	a[1] = atk;
+	a[2] = def;
+	return a;
+
+}
+
+void Unit::equip(Equipment *){
 	
 }
 
