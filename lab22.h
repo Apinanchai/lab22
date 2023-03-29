@@ -27,7 +27,7 @@ class Unit{
 		bool dodge_on; 
 		Equipment *equipment; 
 	public:			
-		Unit(string,string); 
+		Unit(string,string);
 		void showStatus();
 		void newTurn();
 		int attack(Unit &);
@@ -54,8 +54,8 @@ Unit::Unit(string t,string n){
 	}
 	hp = hpmax;	
 	guard_on = false;
-	dodge_on = false;
 	equipment = NULL;
+	dodge_on = false;
 }
 
 void Unit::showStatus(){
@@ -75,7 +75,7 @@ void Unit::showStatus(){
 
 void Unit::newTurn(){
 	guard_on = false;
-	dodge_on = false; 
+	dodge_on = false;
 }
 
 int Unit::beAttacked(int oppatk){
@@ -86,24 +86,18 @@ int Unit::beAttacked(int oppatk){
 	}	
 	hp -= dmg;
 	if(hp <= 0){hp = 0;}
-	
 	if(dodge_on){
 		if(rand()%2){
 		dmg = 0;
-
-	}else{
+		}else{
 		dmg *= 2;
-	}
+		}
 	}
 	return dmg;	
 }
 
 int Unit::attack(Unit &opp){
 	return opp.beAttacked(atk);
-}
-
-int Unit::ultimateAttack(Unit &opp){
-	return opp.beAttacked(atk*2);
 }
 
 int Unit::heal(){
@@ -121,28 +115,39 @@ bool Unit::isDead(){
 	if(hp <= 0) return true;
 	else return false;
 }
-
+int Unit::ultimateAttack(Unit &opp){
+	return opp.beAttacked(atk*2);
+}
 void Unit::dodge(){
-	dodge_on = true;
+	dodge_on =true;
 }
-
-Equipment::Equipment(int x,int y, int z){
-	hpmax += x;
-	atk += y;
-	def += z;
+Equipment::Equipment(int x,int y,int z){
+	hpmax = x; 
+	atk = y; 
+	def = z;
 }
-
 vector<int> Equipment::getStat(){
 	vector<int> a(3);
 	a[0] = hpmax;
 	a[1] = atk;
 	a[2] = def;
 	return a;
-
 }
-
-void Unit::equip(Equipment *){
-	
+void Unit::equip(Equipment *arvud){
+	vector<int> w = arvud->getStat();
+	if(equipment){
+		vector<int> v = equipment->getStat();
+		hpmax -= v[0];
+		atk -= v[1];
+		def -= v[2];
+	}
+	hpmax += w[0];
+	atk += w[1];
+	def += w[2];
+	if(hp>hpmax){
+		hp = hpmax;
+	}
+	equipment = arvud;
 }
 
 void drawScene(char p_action,int p,char m_action,int m){
